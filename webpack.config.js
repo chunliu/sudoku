@@ -33,7 +33,6 @@ module.exports = {
         hot: true,
         // enable HMR on the server
         noInfo: true,
-        quiet: true,
         // minimize the output to terminal.
         contentBase: resolve(__dirname, 'src'),
         // match the output path
@@ -58,13 +57,12 @@ module.exports = {
             { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
             {
                 test: /\.scss$/,
-                use: [{
-                    loader: "style-loader" // creates style nodes from JS strings
-                }, {
-                    loader: "css-loader" // translates CSS into CommonJS
-                }, {
-                    loader: "sass-loader" // compiles Sass to CSS
-                }]
+                exclude: [resolve(__dirname, "node_modules")],
+                use: [
+                    {loader: "style-loader"}, // creates style nodes from JS strings
+                    {loader: "css-loader"}, // translates CSS into CommonJS
+                    {loader: "sass-loader"}, // compiles Sass to CSS
+                ]
             },            
             { test: /\.css$/, loader: "style-loader!css-loader" },
             { test: /\.png$/, loader: "url-loader?limit=100000" },
