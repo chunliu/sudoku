@@ -8,8 +8,14 @@ describe("Sudoku core", () => {
         expect(Sudoku.unitList.length).toBe(27);
     });
     it("a square is in 3 units", () => {
-        for(let s in Sudoku.squares) {
+        for(let s of Sudoku.squares) {
             expect(Sudoku.units[s].length).toBe(3);
+        }
+    });
+    it("peers length should be 20", () => {
+        for(let s of Sudoku.squares) {
+            // console.log(Sudoku.peers[s]);
+            expect(Object.keys(Sudoku.peers[s]).length).toBe(20);
         }
     })
 })
