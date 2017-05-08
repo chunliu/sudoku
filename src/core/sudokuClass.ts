@@ -20,25 +20,8 @@ export class Sudoku {
         this.Units = this.CreateUnits();
         this.Peers = this.CreatePeers();
     }
-    public ParseGrid(grid: string) {
-        const values: {[index: string]: string} = {};
-        for (const s of this.Squares) {
-            values[s] = DIGITS;
-        }
-        const allDigits = "0.-123456789";
-        let grid2 = "";
-        for (const c of grid) {
-            if (allDigits.indexOf(c) >= 0) {
-                grid2 += c;
-            }
-        }
-        for (let i = 0; i < this.Squares.length; i++) {
-            if (DIGITS.indexOf(grid2.charAt(i)) >= 0
-                && !this.Assign(values, this.Squares[i], grid2.charAt(i))) {
-                return false;
-            }
-        }
-        return values;
+    public Solve(grid: string) {
+        return this.Search(this.ParseGrid(grid));
     }
     public Dislay(input: {[index: string]: string} | boolean) {
         if (typeof input === "boolean") {
@@ -46,7 +29,7 @@ export class Sudoku {
             return;
         }
         const values: {[index: string]: string} = input;
-        let width: number = 0; 
+        let width: number = 0;
         for (const s of this.Squares) {
             if (width < values[s].length) {
                 width = values[s].length;
@@ -54,16 +37,16 @@ export class Sudoku {
         }
         width += 1;
         let dash: string = "";
-        for(let i = 0; i < width*3; i++) {
+        for (let i = 0; i < width * 3; i++) {
             dash += "-";
         }
-        let line = dash + "+" + dash + "+" + dash;
+        const line = dash + "+" + dash + "+" + dash;
         let result = "";
         for (const r of ROWS) {
             let row = "";
             for (const c of COLS) {
-                row += values[r+c] + " ";
-                if(c === "3" || c === "6") {
+                row += values[r + c] + " ";
+                if (c === "3" || c === "6") {
                     row += "|";
                 }
             }
@@ -100,20 +83,12 @@ export class Sudoku {
         }
         return unitlist;
     }
-    private Member(item: string, list: string[]) {
-        for (const i of list){
-            if (item === i) {
-                return true;
-            }
-        }
-        return false;
-    }
     private CreateUnits(): IUnits {
         const units: IUnits = {};
         for (const s of this.Squares){
             units[s] = [];
             for (const u of this.UnitList) {
-                if (this.Member(s, u)) {
+                if (u.indexOf(s) !== -1) {
                     units[s].push(u);
                 }
             }
@@ -135,6 +110,7 @@ export class Sudoku {
         }
         return peers;
     }
+    // Constraint Propagation
     private Assign(values: {[index: string]: string}, square: string, digit: string) {
         let result = true;
         const v = values[square];
@@ -181,5 +157,55 @@ export class Sudoku {
             }
         }
         return values;
+    }
+    private ParseGrid(grid: string) {
+        const values: {[index: string]: string} = {};
+        for (const s of this.Squares) {
+            values[s] = DIGITS;
+        }
+        const allDigits = "0.-123456789";
+        let grid2 = "";
+        for (const c of grid) {
+            if (allDigits.indexOf(c) >= 0) {
+                grid2 += c;
+            }
+        }
+        for (let i = 0; i < this.Squares.length; i++) {
+            if (DIGITS.indexOf(grid2.charAt(i)) >= 0
+                && !this.Assign(values, this.Squares[i], grid2.charAt(i))) {
+                return false;
+            }
+        }
+        return values;
+    }
+    private Search(input: {[index: string]: string} | boolean): {[index: string]: string} | boolean {
+        // Using depth-first search and propagation, try all possible values.
+        if (typeof input === "boolean" && !input) {
+            return false; // Failed earlier.
+        }
+        const values = input as {[index: string]: string};
+        let min = 10;
+        let max = 1;
+        let sq = "";
+        for (const s of this.Squares) {
+            if (values[s].length > max) {
+                max = values[s].length;
+            }
+            if (values[s].length > 1 && values[s].length < min) {
+                min = values[s].length;
+                sq = s;
+            }
+        }
+        if (max === 1) {
+            return values; // Solved.
+        }
+        for (let i = 0; i < values[sq].length; i++) {
+            // Duplicate the array and then do propagation on it.
+            const result = this.Search(this.Assign(Object.assign({}, values), sq, values[sq].charAt(i)));
+            if (result) {
+                return result;
+            }
+        }
+        return false;
     }
 }

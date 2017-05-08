@@ -45,7 +45,10 @@ module.exports = {
                 enforce: "pre",                
                 test: /\.(ts|tsx)?$/, 
                 loader: 'tslint-loader',
-                exclude: [resolve(__dirname, "node_modules")],
+                exclude: [
+                    resolve(__dirname, "node_modules"),
+                    resolve(__dirname, "src/tests")
+                ],
             },             
             { 
                 test: /\.tsx?$/, 
