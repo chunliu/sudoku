@@ -4,6 +4,7 @@
   "description": "A Sudoku puzzle game created with React, Redux and TypeScript.",
   "main": "index.js",
   "scripts": {
+    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "start": "webpack-dev-server",
     "test": "jest"
   },

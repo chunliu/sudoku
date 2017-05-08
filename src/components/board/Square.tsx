@@ -6,4 +6,4 @@ export const Square = () => {
         1
         </button>
     );
-}
+};

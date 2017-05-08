@@ -1,12 +1,12 @@
-import * as React from 'react';
+import * as React from "react";
 import {GameBoard} from "./board/GameBoard";
 
-interface GameProps {};
+interface GameProps {}
 
-interface GameState {};
+interface GameState {}
 
 export class Game extends React.Component<GameProps, GameState> {
-    render(): JSX.Element {
+    public render(): JSX.Element {
         return (
             <div>
                 <h1>Sukodu</h1>

@@ -2,12 +2,12 @@ import * as React from "react";
 import {Square} from "./Square";
 import "../../scss/main.scss";
 
-interface GameBoardProps {};
+interface GameBoardProps {}
 
-interface GameBoardState {};
+interface GameBoardState {}
 
 export class GameBoard extends React.Component<GameBoardProps, GameBoardState> {
-    render() {
+    public render() {
         return (
             <div>
                 <div className="status">{status}</div>
