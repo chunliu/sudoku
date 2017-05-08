@@ -78,6 +78,16 @@ function assign(values: {[index: string]: string}, square: string, digit: string
 }
 
 function eliminate(values: {[index: string]: string}, square: string, digit: string) {
+    if (values[square].indexOf(digit) == -1) {
+        return values;
+    }
+    values[square] = values[square].replace(digit, "");
+    if(values[square].length == 0) {
+        return false;
+    } 
+    if (values[square].length == 1) {
+        
+    }
     return true;
 }
 
