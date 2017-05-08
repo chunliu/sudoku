@@ -1,24 +1,78 @@
 interface IUnits {
-    [index: string]: any[];
+    [index: string]: string[][];
 }
 
 interface IPeers {
     [index: string]: {[index: string]: boolean};
 }
-const rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
-const cols = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-const digits = "123456789";
+const ROWS = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
+const COLS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const DIGITS = "123456789";
 
 export class Sudoku {
-    Squares: string[];
-    UnitList: string[][];
-    Units: IUnits;
-    Peers: IPeers;
-    constructor(){
-        this.Squares = this.Cross(rows, cols);
-        this.UnitList = this.CreateUnitList(cols, rows);
+    public Squares: string[];
+    public UnitList: string[][];
+    public Units: IUnits;
+    public Peers: IPeers;
+    constructor() {
+        this.Squares = this.Cross(ROWS, COLS);
+        this.UnitList = this.CreateUnitList(ROWS, COLS);
         this.Units = this.CreateUnits();
         this.Peers = this.CreatePeers();
+    }
+    public ParseGrid(grid: string) {
+        const values: {[index: string]: string} = {};
+        for (const s of this.Squares) {
+            values[s] = DIGITS;
+        }
+        const allDigits = "0.-123456789";
+        let grid2 = "";
+        for (const c of grid) {
+            if (allDigits.indexOf(c) >= 0) {
+                grid2 += c;
+            }
+        }
+        for (let i = 0; i < this.Squares.length; i++) {
+            if (DIGITS.indexOf(grid2.charAt(i)) >= 0
+                && !this.Assign(values, this.Squares[i], grid2.charAt(i))) {
+                return false;
+            }
+        }
+        return values;
+    }
+    public Dislay(input: {[index: string]: string} | boolean) {
+        if (typeof input === "boolean") {
+            console.log("input is boolean");
+            return;
+        }
+        const values: {[index: string]: string} = input;
+        let width: number = 0; 
+        for (const s of this.Squares) {
+            if (width < values[s].length) {
+                width = values[s].length;
+            }
+        }
+        width += 1;
+        let dash: string = "";
+        for(let i = 0; i < width*3; i++) {
+            dash += "-";
+        }
+        let line = dash + "+" + dash + "+" + dash;
+        let result = "";
+        for (const r of ROWS) {
+            let row = "";
+            for (const c of COLS) {
+                row += values[r+c] + " ";
+                if(c === "3" || c === "6") {
+                    row += "|";
+                }
+            }
+            result += row + "\r\n";
+            if (r === "C" || r === "F") {
+                result += line + "\r\n";
+            }
+        }
+        console.log(result);
     }
     private Cross(A: string[], B: string[]) {
         const C: string[] = [];
@@ -29,7 +83,7 @@ export class Sudoku {
         }
         return C;
     }
-    private CreateUnitList(cols: string[], rows: string[]) {
+    private CreateUnitList(rows: string[], cols: string[]) {
         const unitlist = [];
         for (const c of cols) {
             unitlist.push(this.Cross(rows, [c]));
@@ -53,7 +107,7 @@ export class Sudoku {
             }
         }
         return false;
-    }    
+    }
     private CreateUnits(): IUnits {
         const units: IUnits = {};
         for (const s of this.Squares){
@@ -80,5 +134,52 @@ export class Sudoku {
             }
         }
         return peers;
+    }
+    private Assign(values: {[index: string]: string}, square: string, digit: string) {
+        let result = true;
+        const v = values[square];
+        for (const c of v) {
+            if (c !== digit) {
+                result = result && (this.Eliminate(values, square, c) ? true : false);
+            }
+        }
+        return result ? values : false;
+    }
+    private Eliminate(values: {[index: string]: string}, square: string, digit: string) {
+        if (values[square].indexOf(digit) === -1) {
+            // digit has already been elimiated.
+            return values;
+        }
+        values[square] = values[square].replace(digit, ""); // eliminate digit from values.
+        if (values[square].length === 0) {
+            // Contradiction: removed last value
+            return false;
+        } else if (values[square].length === 1) {
+            // If a square s is reduced to one value d2, then eliminate d2 from the peers.
+            let result = true;
+            for (const s in this.Peers[square]) {
+                result = result && (this.Eliminate(values, s, values[square]) ? true : false);
+            }
+            if (!result) {
+                return false;
+            }
+        }
+        for (const u of this.Units[square]) {
+            // If a unit u is reduced to only one place for a value d, then put it there.
+            const dplaces: string[] = [];
+            for (const s of u) {
+                if (values[s].indexOf(digit) !== -1) {
+                    dplaces.push(s);
+                }
+            }
+            if (dplaces.length === 0) {
+                return false;
+            } else if (dplaces.length === 1) {
+                if (!this.Assign(values, dplaces[0], digit)) {
+                    return false;
+                }
+            }
+        }
+        return values;
     }
 }

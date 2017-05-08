@@ -19,5 +19,9 @@ describe("Sudoku Class", () => {
             // console.log(Sudoku.peers[s]);
             expect(Object.keys(sudoku.Peers[s]).length).toBe(20);
         }
+    });
+    it("solve puzzle", () => {
+        const grid = "003020600900305001001806400008102900700000008006708200002609500800203009005010300";
+        sudoku.Dislay(sudoku.ParseGrid(grid));
     })
 })
