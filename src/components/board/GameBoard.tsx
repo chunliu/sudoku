@@ -1,5 +1,6 @@
 import * as React from "react";
 import {Square} from "./Square";
+import {COLS, ROWS} from "../../core/sudokuClass";
 import "../../scss/main.scss";
 
 interface GameBoardProps {}
@@ -11,21 +12,15 @@ export class GameBoard extends React.Component<GameBoardProps, GameBoardState> {
         return (
             <div>
                 <div className="status">{status}</div>
-                <div className="board-row">
-                    <Square />
-                    <Square />
-                    <Square />
-                </div>
-                <div className="board-row">
-                    <Square />
-                    <Square />
-                    <Square />
-                </div>
-                <div className="board-row">
-                    <Square />
-                    <Square />
-                    <Square />
-                </div>
+                {ROWS.map(r => {
+                    return (
+                        <div className="board-row">
+                            {COLS.map(c => {
+                                return <Square key={r + c} value={c} />;
+                            })}
+                        </div>
+                    );
+                })}
             </div>
         );
     }

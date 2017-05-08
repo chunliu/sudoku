@@ -1,3 +1,6 @@
+export const ROWS = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
+export const COLS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+export const DIGITS = "123456789";
 interface IUnits {
     [index: string]: string[][];
 }
@@ -5,9 +8,6 @@ interface IUnits {
 interface IPeers {
     [index: string]: {[index: string]: boolean};
 }
-const ROWS = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
-const COLS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-const DIGITS = "123456789";
 
 export class Sudoku {
     public Squares: string[];

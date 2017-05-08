@@ -1,5 +1,6 @@
 import * as React from "react";
 import {GameBoard} from "./board/GameBoard";
+import {COLS, ROWS} from "../core/sudokuClass";
 
 interface GameProps {}
 

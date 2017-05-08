@@ -1,9 +1,16 @@
-import * as React from "react";
+import * as React from 'react';
 
-export const Square = () => {
-    return (
-        <button className="square">
-        1
-        </button>
-    );
+interface SquareProps {
+    key: string;
+    value: string;
 };
+
+interface SquareState {};
+
+export class Square extends React.Component<SquareProps, SquareState> {
+    public render(): JSX.Element {
+        return (
+            <button className="square">{this.props.value}</button>
+        );
+    }
+}
