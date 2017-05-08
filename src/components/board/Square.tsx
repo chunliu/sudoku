@@ -1,11 +1,11 @@
-import * as React from 'react';
+import * as React from "react";
 
 interface SquareProps {
     key: string;
     value: string;
-};
+}
 
-interface SquareState {};
+interface SquareState {}
 
 export class Square extends React.Component<SquareProps, SquareState> {
     public render(): JSX.Element {

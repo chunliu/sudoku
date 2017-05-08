@@ -8,7 +8,9 @@ interface IUnits {
 interface IPeers {
     [index: string]: {[index: string]: boolean};
 }
-
+export interface ISudoku {
+    [index: string]: string;
+}
 export class Sudoku {
     public Squares: string[];
     public UnitList: string[][];
@@ -23,12 +25,11 @@ export class Sudoku {
     public Solve(grid: string) {
         return this.Search(this.ParseGrid(grid));
     }
-    public Dislay(input: {[index: string]: string} | boolean) {
+    public Dislay(input: ISudoku | boolean): string {
         if (typeof input === "boolean") {
-            console.log("input is boolean");
-            return;
+            return "Input is false";
         }
-        const values: {[index: string]: string} = input;
+        const values: ISudoku = input;
         let width: number = 0;
         for (const s of this.Squares) {
             if (width < values[s].length) {
@@ -55,7 +56,7 @@ export class Sudoku {
                 result += line + "\r\n";
             }
         }
-        console.log(result);
+        return result;
     }
     private Cross(A: string[], B: string[]) {
         const C: string[] = [];
@@ -111,7 +112,7 @@ export class Sudoku {
         return peers;
     }
     // Constraint Propagation
-    private Assign(values: {[index: string]: string}, square: string, digit: string) {
+    private Assign(values: ISudoku, square: string, digit: string) {
         let result = true;
         const v = values[square];
         for (const c of v) {
@@ -121,7 +122,7 @@ export class Sudoku {
         }
         return result ? values : false;
     }
-    private Eliminate(values: {[index: string]: string}, square: string, digit: string) {
+    private Eliminate(values: ISudoku, square: string, digit: string) {
         if (values[square].indexOf(digit) === -1) {
             // digit has already been elimiated.
             return values;
@@ -159,7 +160,7 @@ export class Sudoku {
         return values;
     }
     private ParseGrid(grid: string) {
-        const values: {[index: string]: string} = {};
+        const values: ISudoku = {};
         for (const s of this.Squares) {
             values[s] = DIGITS;
         }
@@ -178,12 +179,12 @@ export class Sudoku {
         }
         return values;
     }
-    private Search(input: {[index: string]: string} | boolean): {[index: string]: string} | boolean {
+    private Search(input: ISudoku | boolean): ISudoku | boolean {
         // Using depth-first search and propagation, try all possible values.
         if (typeof input === "boolean" && !input) {
             return false; // Failed earlier.
         }
-        const values = input as {[index: string]: string};
+        const values = input as ISudoku;
         let min = 10;
         let max = 1;
         let sq = "";

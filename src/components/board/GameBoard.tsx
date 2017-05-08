@@ -12,11 +12,11 @@ export class GameBoard extends React.Component<GameBoardProps, GameBoardState> {
         return (
             <div>
                 <div className="status">{status}</div>
-                {ROWS.map(r => {
+                {ROWS.map((r) => {
                     return (
                         <div className="board-row">
-                            {COLS.map(c => {
-                                return <Square key={r + c} value={c} />;
+                            {COLS.map((c) => {
+                                return <Square key={r + c} value={r + c} />;
                             })}
                         </div>
                     );
