@@ -4,6 +4,9 @@ import {Square} from "../components/board/Square";
 
 describe("<Square />", () => {
     it("render Square", () => {
-        expect(shallow(<Square disabled={false} squareKey="A1" value="1"/>).contains(<button key="A1" disabled={false} className="square">1</button>)).toBe(true);
+        expect(shallow(<Square disabled={false} 
+           onSquareClick={() => {alert("abc")}} 
+           squareKey="A1" value="1"/>).contains(<button key="A1" 
+                disabled={false} className="square" onClick={() => {alert("abc")}}>1</button>)).toBe(true);
     });
 });

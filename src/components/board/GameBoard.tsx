@@ -1,9 +1,16 @@
 import * as React from "react";
+import * as Redux from "redux";
 import {connect} from "react-redux";
 import {Square} from "./Square";
 import {COLS, ROWS, ISudoku} from "../../core/sudokuClass";
 import {ISudokuState, GameStatus} from "../../redux/types";
 import "../../scss/main.scss";
+
+interface IBoardProps {
+    sudoku: ISudoku;
+    status: GameStatus;
+    onSquareClick(id: string): void;
+}
 
 class GameBoardClass extends React.Component<ISudokuState, ISudokuState> {
     public render() {
@@ -21,6 +28,7 @@ class GameBoardClass extends React.Component<ISudokuState, ISudokuState> {
                                     disabled = value !== "";
                                 }
                                 return <Square key={r + c}
+                                    onSquareClick={(key: string) => {alert(key + " is clicked"); }}
                                     disabled={disabled} squareKey={r + c}
                                     value={value} />;
                             })}
@@ -43,4 +51,11 @@ const mapStateToProps = (state: IBoardState) => {
     };
 };
 
+// const mapDispatchToProps = (dispatch: Redux.Dispatch<ISudokuState>) => {
+//     return {
+//         onSquareClick: (key: string) => {
+//             alert(key + " is clicked");
+//         }
+//     };
+// }
 export const GameBoard = connect(mapStateToProps)(GameBoardClass);
