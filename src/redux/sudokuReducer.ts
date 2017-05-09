@@ -1,18 +1,18 @@
 import {combineReducers, Reducer} from "redux";
 import {ISudokuState, ISudokuAction, ActionType, initState, IStatusAction} from "./types";
 
-const sudokuReducer = (state: ISudokuState = initState, action: ISudokuAction) => {
+const sudokuReducer = (state = initState.sudoku, action: ISudokuAction) => {
     switch (action.type) {
         case ActionType.LOAD_GRID_SUCCESS:
-            return Object.assign({}, state, {sudoku: action.sudoku});
+            return action.sudoku;
         default:
             return state;
     }
 };
-const statusReducer = (state: ISudokuState = initState, action: IStatusAction) => {
+const statusReducer = (state = initState.status, action: IStatusAction) => {
     switch (action.type) {
         case ActionType.STATUS_UPDATE:
-            return Object.assign({}, state, {status: action.status});
+            return action.status;
         default:
             return state;
     }

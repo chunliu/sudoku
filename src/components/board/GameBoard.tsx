@@ -4,33 +4,44 @@ import {connect} from "react-redux";
 import {Square} from "./Square";
 import {COLS, ROWS, ISudoku} from "../../core/sudokuClass";
 import {ISudokuState, GameStatus} from "../../redux/types";
+import {statusUpdate} from "../../redux/sudokuAction";
 import "../../scss/main.scss";
 
 interface IBoardProps {
     sudoku: ISudoku;
     status: GameStatus;
-    onSquareClick(id: string): void;
+    actions: any;
 }
 
-class GameBoardClass extends React.Component<ISudokuState, ISudokuState> {
+class GameBoardClass extends React.Component<IBoardProps, ISudokuState> {
+    public componentDidMount() {
+        this.props.actions.statusUpdate(GameStatus.Playing);
+    }
     public render() {
         const {sudoku} = this.props;
         return (
             <div>
-                <div className="status">{status}</div>
+                {this.renderSudokuGrid(sudoku)}
+                <br />
+                {this.renderNumberSelection()}
+            </div>
+        );
+    }
+    private renderSudokuGrid(sudoku: ISudoku) {
+        return (
+            <div>
+                <div className="status">{this.props.status.toString()}</div>
                 {ROWS.map((r) => {
                     return (
                         <div key={r} className="board-row">
                             {COLS.map((c) => {
-                                let disabled = false;
                                 const value = sudoku[r + c];
-                                if (this.props.status === GameStatus.Initializing) {
-                                    disabled = value !== "";
-                                }
-                                return <Square key={r + c}
+                                return (
+                                    <Square key={r + c}
                                     onSquareClick={(key: string) => {alert(key + " is clicked"); }}
-                                    disabled={disabled} squareKey={r + c}
-                                    value={value} />;
+                                    status={this.props.status} squareKey={r + c}
+                                    value={value} />
+                                );
                             })}
                         </div>
                     );
@@ -38,24 +49,37 @@ class GameBoardClass extends React.Component<ISudokuState, ISudokuState> {
             </div>
         );
     }
+    private renderNumberSelection() {
+        return (
+            <div className="board-row">
+                {COLS.map((c) => {
+                    return (
+                        <Square key={c} onSquareClick={(key: string) => {alert(key + " is clicked"); }}
+                            squareKey={c} value={c} />
+                    );
+                })}
+            </div>
+        );
+    }
 }
-interface IBoardState {
-    sudokuReducer: ISudokuState;
-    statusReducer: ISudokuState;
+interface IStateFromStore {
+    sudokuReducer: ISudoku;
+    statusReducer: GameStatus;
 }
 
-const mapStateToProps = (state: IBoardState) => {
+const mapStateToProps = (state: IStateFromStore) => {
     return {
-        sudoku: state.sudokuReducer.sudoku,
-        status: state.statusReducer.status,
+        sudoku: state.sudokuReducer,
+        status: state.statusReducer,
     };
 };
 
-// const mapDispatchToProps = (dispatch: Redux.Dispatch<ISudokuState>) => {
-//     return {
-//         onSquareClick: (key: string) => {
-//             alert(key + " is clicked");
-//         }
-//     };
-// }
-export const GameBoard = connect(mapStateToProps)(GameBoardClass);
+const mapDispatchToProps = (dispatch: Redux.Dispatch<ISudokuState>) => {
+    return {
+        actions: Redux.bindActionCreators({
+            statusUpdate,
+        }, dispatch),
+    };
+};
+
+export const GameBoard = connect(mapStateToProps, mapDispatchToProps)(GameBoardClass);

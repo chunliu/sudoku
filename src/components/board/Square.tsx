@@ -1,17 +1,30 @@
 import * as React from "react";
-
-interface SquareProps {
+import {GameStatus} from "../../redux/types";
+interface ISquareProps {
     squareKey: string;
     value: string;
-    disabled: boolean;
+    status?: GameStatus;
     onSquareClick(key: string): void;
 }
 
-export class Square extends React.Component<SquareProps, {}> {
+interface ISquareState {
+    disabled: boolean;
+}
+
+export class Square extends React.Component<ISquareProps, ISquareState> {
+    constructor() {
+        super();
+        this.state = {disabled: false};
+    }
+    public componentWillMount() {
+        if (this.props.status === GameStatus.Initializing) {
+            this.setState({disabled: this.props.value !== ""});
+        }
+    }
     public render(): JSX.Element {
         return (
             <button key={this.props.squareKey} className="square"
-                disabled={this.props.disabled}
+                disabled={this.state.disabled}
                 onClick={() => {this.props.onSquareClick(this.props.squareKey); }}>
                 {this.props.value}
             </button>
