@@ -2,11 +2,7 @@ import * as React from "react";
 import {GameBoard} from "./board/GameBoard";
 import {COLS, ROWS} from "../core/sudokuClass";
 
-interface GameProps {}
-
-interface GameState {}
-
-export class Game extends React.Component<GameProps, GameState> {
+export class Game extends React.Component<{}, {}> {
     public render(): JSX.Element {
         return (
             <div>

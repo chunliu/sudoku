@@ -1,16 +1,17 @@
 import * as React from "react";
 
 interface SquareProps {
-    key: string;
+    squareKey: string;
     value: string;
+    disabled: boolean;
 }
 
-interface SquareState {}
-
-export class Square extends React.Component<SquareProps, SquareState> {
+export class Square extends React.Component<SquareProps, {}> {
     public render(): JSX.Element {
         return (
-            <button className="square">{this.props.value}</button>
+            <button key={this.props.squareKey} className="square" disabled={this.props.disabled}>
+                {this.props.value}
+            </button>
         );
     }
 }

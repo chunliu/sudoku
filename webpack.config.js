@@ -52,6 +52,10 @@ module.exports = {
             },             
             { 
                 test: /\.tsx?$/, 
+                exclude: [
+                    resolve(__dirname, "node_modules"),
+                    resolve(__dirname, "src/tests")
+                ],          
                 use: [
                     {loader: 'react-hot-loader/webpack'}, 
                     {loader: 'awesome-typescript-loader'}, 
