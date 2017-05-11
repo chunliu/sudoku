@@ -6,6 +6,12 @@ interface ISquareProps {
     value: string;
     status?: GameStatus;
     isPressed?: boolean;
+    borderleft?: boolean;
+    bordertop?: boolean;
+    borderright?: boolean;
+    borderbotton?: boolean;
+    className?: string;
+    disabled?: boolean;
     onSquareClick(key: string): void;
 }
 
@@ -13,13 +19,41 @@ interface ISquareState {
     disabled: boolean;
 }
 
-const Button = styled.button`
-    background: ${(props) => props.default ? "#0388ca" : "#ffffff"};
-    border: 1px solid #999;
+class Square extends React.Component<ISquareProps, ISquareState> {
+    constructor() {
+        super();
+        this.state = {
+            disabled: false,
+        };
+    }
+    public componentWillMount() {
+        if (this.props.status === GameStatus.Initializing) {
+            this.setState({disabled: this.props.value !== ""});
+        }
+    }
+    public render(): JSX.Element {
+        return (
+            <button className={this.props.className} key={this.props.squareKey}
+                disabled={this.state.disabled}
+                default={this.props.isPressed}
+                onClick={() => {
+                    this.props.onSquareClick(this.props.squareKey);
+                }}>
+                {this.props.value}
+            </button>
+        );
+    }
+}
+export const StyledSquare = styled(Square)`
+    background: ${(props) => props.isPressed ? "#0388ca" : "#ffffff"};
+    border-left: ${(props) => props.borderleft ? "2px solid #4e535b" : "1px solid #999"};
+    border-top: ${(props) => props.bordertop ? "2px solid #4e535b" : "1px solid #999"};
+    border-right: ${(props) => props.borderright ? "2px solid #4e535b" : "1px solid #999"};
+    border-bottom: ${(props) => props.borderbotton ? "2px solid #4e535b" : "1px solid #999"};
     float: left;
     font-size: 24px;
     font-weight: bold;
-    color: ${(props) => props.default ? "#ffffff" : "#000000"};
+    color: ${(props) => props.isPressed ? "#ffffff" : "#000000"};
     line-height: 34px;
     height: 48px;
     margin-right: -1px;
@@ -34,29 +68,3 @@ const Button = styled.button`
         background: ${(props) => props.disabled ? "#ffffff" : "#0388ca"};
     }
 `;
-
-export class Square extends React.Component<ISquareProps, ISquareState> {
-    constructor() {
-        super();
-        this.state = {
-            disabled: false,
-        };
-    }
-    public componentWillMount() {
-        if (this.props.status === GameStatus.Initializing) {
-            this.setState({disabled: this.props.value !== ""});
-        }
-    }
-    public render(): JSX.Element {
-        return (
-            <Button key={this.props.squareKey}
-                disabled={this.state.disabled}
-                default={this.props.isPressed}
-                onClick={() => {
-                    this.props.onSquareClick(this.props.squareKey);
-                }}>
-                {this.props.value}
-            </Button>
-        );
-    }
-}

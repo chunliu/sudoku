@@ -1,7 +1,8 @@
 import * as React from "react";
 import * as Redux from "redux";
 import {connect} from "react-redux";
-import {Square} from "./Square";
+import styled from "styled-components";
+import {StyledSquare} from "./Square";
 import {COLS, ROWS, ISudoku} from "../../core/sudokuClass";
 import {ISudokuState, GameStatus} from "../../redux/types";
 import {actionCreators} from "../../redux/sudokuAction";
@@ -11,10 +12,11 @@ interface IBoardProps {
     sudoku: ISudoku;
     status: GameStatus;
     numberSelected: string;
+    className?: string;
     actions: any;
 }
 
-class GameBoardClass extends React.Component<IBoardProps, ISudokuState> {
+class GameBoardClass extends React.Component<IBoardProps, {}> {
     constructor() {
         super();
         this.handleGridClick = this.handleGridClick.bind(this);
@@ -26,7 +28,7 @@ class GameBoardClass extends React.Component<IBoardProps, ISudokuState> {
     public render() {
         const {sudoku} = this.props;
         return (
-            <div>
+            <div className={this.props.className}>
                 {this.renderSudokuGrid(sudoku)}
                 <br />
                 {this.renderNumberSelection()}
@@ -36,14 +38,17 @@ class GameBoardClass extends React.Component<IBoardProps, ISudokuState> {
     private renderSudokuGrid(sudoku: ISudoku) {
         return (
             <div>
-                <div className="status">{this.props.numberSelected}</div>
                 {ROWS.map((r) => {
                     return (
                         <div key={r} className="board-row">
                             {COLS.map((c) => {
                                 const value = sudoku[r + c];
                                 return (
-                                    <Square key={r + c}
+                                    <StyledSquare key={r + c}
+                                        borderright={"36".indexOf(c) >= 0}
+                                        borderleft={"47".indexOf(c) >= 0}
+                                        borderbotton={"CF".indexOf(r) >= 0}
+                                        bordertop={"DG".indexOf(r) >= 0}
                                         onSquareClick={this.handleGridClick}
                                         status={this.props.status} squareKey={r + c}
                                         value={value} />
@@ -60,7 +65,7 @@ class GameBoardClass extends React.Component<IBoardProps, ISudokuState> {
             <div className="board-row">
                 {COLS.map((c) => {
                     return (
-                        <Square key={c} onSquareClick={this.handleNumberClick}
+                        <StyledSquare key={c} onSquareClick={this.handleNumberClick}
                             isPressed={this.props.numberSelected === c} squareKey={c} value={c} />
                     );
                 })}
@@ -68,15 +73,20 @@ class GameBoardClass extends React.Component<IBoardProps, ISudokuState> {
         );
     }
     private handleGridClick(key: string) {
-        this.props.sudoku[key] = this.props.sudoku[key] === ""
+        const s: ISudoku = {};
+        s[key] = this.props.sudoku[key] === ""
             ? this.props.numberSelected : "";
-
-        this.props.actions.loadGridSuccess(this.props.sudoku);
+        // Update redux store.
+        this.props.actions.loadGridSuccess(s);
     }
     private handleNumberClick(key: string) {
         this.props.actions.updateNumberSelected(key);
     }
 }
+const StyledGameBoard = styled(GameBoardClass)`
+    width: 450px;
+    float: left;
+`;
 interface IStateFromStore {
     sudokuReducer: ISudoku;
     statusReducer: GameStatus;
@@ -97,4 +107,4 @@ const mapDispatchToProps = (dispatch: Redux.Dispatch<ISudokuState>) => {
     };
 };
 
-export const GameBoard = connect(mapStateToProps, mapDispatchToProps)(GameBoardClass);
+export const GameBoard = connect(mapStateToProps, mapDispatchToProps)(StyledGameBoard);
