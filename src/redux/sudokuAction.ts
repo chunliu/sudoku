@@ -1,5 +1,6 @@
 import * as Redux from "redux";
-import {ActionType, ISudokuAction, GameStatus, IStatusAction, INumberSelectedAction} from "./types";
+import {ActionType, ISudokuAction, GameStatus,
+    IStatusAction, INumberSelectedAction} from "./types";
 import {ISudoku} from "../core/sudokuClass";
 
 export const loadGridSuccess = (grid: ISudoku): ISudokuAction => {
@@ -14,6 +15,7 @@ export const updateNumberSelected = (numberSelected: string): INumberSelectedAct
     return {type: ActionType.NUMBER_SELECTED, numberSelected};
 };
 export const actionCreators = {
+    loadGridSuccess,
     statusUpdate,
     updateNumberSelected,
 };

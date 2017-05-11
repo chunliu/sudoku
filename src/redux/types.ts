@@ -4,6 +4,7 @@ export const ActionType = {
     LOAD_GRID_SUCCESS: "LOAD_GRID_SUCCESS",
     STATUS_UPDATE: "STATUS_UPDATE",
     NUMBER_SELECTED: "NUMBER_SELECTED",
+    UPDATE_SUDOKU_GRID: "UPDATE_SUDOKU_GRID",
 };
 export const enum GameStatus {
     Initializing = 0,

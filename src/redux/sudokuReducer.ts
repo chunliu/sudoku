@@ -5,7 +5,7 @@ import {ISudokuState, ISudokuAction, ActionType, initState,
 const sudokuReducer = (state = initState.sudoku, action: ISudokuAction) => {
     switch (action.type) {
         case ActionType.LOAD_GRID_SUCCESS:
-            return action.sudoku;
+            return Object.assign({}, state, action.sudoku);
         default:
             return state;
     }
