@@ -44,7 +44,7 @@ class Square extends React.Component<ISquareProps, ISquareState> {
     }
 }
 export const StyledSquare = styled(Square)`
-    background: ${(props) => props.isPressed ? "#0388ca" : "#ffffff"};
+    background: ${(props) => props.isPressed ? "#03689b" : "#ffffff"};
     border-left: ${(props) => props.borderleft ? "2px solid #4e535b" : "1px solid #999"};
     border-top: ${(props) => props.bordertop ? "2px solid #4e535b" : "1px solid #999"};
     border-right: ${(props) => props.borderright ? "2px solid #4e535b" : "1px solid #999"};
@@ -64,6 +64,6 @@ export const StyledSquare = styled(Square)`
         outline: none;
     }
     &:hover:enabled {
-        background: #0388ca;
+        background: #029ae5;
     }
 `;

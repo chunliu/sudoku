@@ -84,6 +84,7 @@ class GameBoardClass extends React.Component<IBoardProps, {}> {
         s[key] = this.props.sudoku[key] === ""
             ? this.props.numberSelected : "";
         // Update redux store.
+        this.props.actions.updateFillingCount(s[key] !== "" ? -1 : 1);
         this.props.actions.loadGridSuccess(s);
     }
     private handleNumberClick(key: string) {

@@ -2,8 +2,9 @@ import * as React from "react";
 import styled from "styled-components";
 import {GameBoard} from "./board/GameBoard";
 import {StyledLeftSideBar} from "./board/LeftSideBar";
+import {RightSideBar} from "./board/RightSideBar";
 
-interface GameProps{
+interface GameProps {
     className?: string;
 }
 export class Game extends React.Component<GameProps, {}> {
@@ -14,6 +15,7 @@ export class Game extends React.Component<GameProps, {}> {
                 <hr />
                 <StyledLeftSideBar />
                 <GameBoard />
+                <RightSideBar />
             </div>
         );
     }
