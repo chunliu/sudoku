@@ -6,7 +6,6 @@ import {StyledSquare} from "./Square";
 import {COLS, ROWS, ISudoku} from "../../core/sudokuClass";
 import {ISudokuState, GameStatus} from "../../redux/types";
 import {actionCreators} from "../../redux/sudokuAction";
-import "../../scss/main.scss";
 
 interface IBoardProps {
     sudoku: ISudoku;
@@ -16,6 +15,11 @@ interface IBoardProps {
     actions: any;
 }
 
+const BoardRow = styled.div`
+    clear: both;
+    content: "";
+    display: table;
+`;
 class GameBoardClass extends React.Component<IBoardProps, {}> {
     constructor() {
         super();
@@ -40,7 +44,7 @@ class GameBoardClass extends React.Component<IBoardProps, {}> {
             <div>
                 {ROWS.map((r) => {
                     return (
-                        <div key={r} className="board-row">
+                        <BoardRow key={r}>
                             {COLS.map((c) => {
                                 const value = sudoku[r + c];
                                 return (
@@ -54,7 +58,7 @@ class GameBoardClass extends React.Component<IBoardProps, {}> {
                                         value={value} />
                                 );
                             })}
-                        </div>
+                        </BoardRow>
                     );
                 })}
             </div>
@@ -62,17 +66,20 @@ class GameBoardClass extends React.Component<IBoardProps, {}> {
     }
     private renderNumberSelection() {
         return (
-            <div className="board-row">
+            <BoardRow>
                 {COLS.map((c) => {
                     return (
                         <StyledSquare key={c} onSquareClick={this.handleNumberClick}
                             isPressed={this.props.numberSelected === c} squareKey={c} value={c} />
                     );
                 })}
-            </div>
+            </BoardRow>
         );
     }
     private handleGridClick(key: string) {
+        if (this.props.numberSelected === "0") {
+            return;
+        }
         const s: ISudoku = {};
         s[key] = this.props.sudoku[key] === ""
             ? this.props.numberSelected : "";

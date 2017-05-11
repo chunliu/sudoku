@@ -9,7 +9,7 @@ interface ILeftSideBarProps {
 const LeftSideBar: React.StatelessComponent<ILeftSideBarProps> = (props) => (
     <div className={props.className}>
         <ul>
-            <li>New Game</li>
+            <li><a href="#">New Game</a></li>
         </ul>
     </div>
 );
@@ -21,4 +21,7 @@ export const StyledLeftSideBar = styled(LeftSideBar)`
 	padding: 5px 15px;
     border-right: 1px solid #999;
     margin-right: 30px;
+    &:a {
+        color: orange;
+    }
 `;

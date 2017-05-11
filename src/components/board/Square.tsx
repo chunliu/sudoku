@@ -11,7 +11,6 @@ interface ISquareProps {
     borderright?: boolean;
     borderbotton?: boolean;
     className?: string;
-    disabled?: boolean;
     onSquareClick(key: string): void;
 }
 
@@ -64,7 +63,7 @@ export const StyledSquare = styled(Square)`
     &:focus {
         outline: none;
     }
-    &:hover {
-        background: ${(props) => props.disabled ? "#ffffff" : "#0388ca"};
+    &:hover:enabled {
+        background: #0388ca;
     }
 `;
