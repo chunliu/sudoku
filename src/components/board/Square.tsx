@@ -5,22 +5,21 @@ interface ISquareProps {
     squareKey: string;
     value: string;
     status?: GameStatus;
-    numberPressed?: string;
+    isPressed?: boolean;
     onSquareClick(key: string): void;
 }
 
 interface ISquareState {
     disabled: boolean;
-    pressed: boolean;
-    inGrid: boolean;
 }
 
 const Button = styled.button`
-    background: ${(props) => props.default ? "" : "#fff"};
+    background: ${(props) => props.default ? "#0388ca" : "#ffffff"};
     border: 1px solid #999;
     float: left;
     font-size: 24px;
     font-weight: bold;
+    color: ${(props) => props.default ? "#ffffff" : "#000000"};
     line-height: 34px;
     height: 48px;
     margin-right: -1px;
@@ -30,10 +29,9 @@ const Button = styled.button`
     width: 48px;
     &:focus {
         outline: none;
-        /*background: #ddd;*/
     }
     &:hover {
-        background: ${(props) => props.disabled ? "white" : "#0388ca"};
+        background: ${(props) => props.disabled ? "#ffffff" : "#0388ca"};
     }
 `;
 
@@ -42,25 +40,19 @@ export class Square extends React.Component<ISquareProps, ISquareState> {
         super();
         this.state = {
             disabled: false,
-            pressed: false,
-            inGrid: true,
         };
     }
     public componentWillMount() {
         if (this.props.status === GameStatus.Initializing) {
             this.setState({disabled: this.props.value !== ""});
         }
-        this.setState({inGrid: this.props.status !== undefined});
     }
     public render(): JSX.Element {
         return (
             <Button key={this.props.squareKey}
                 disabled={this.state.disabled}
-                default={this.state.pressed}
+                default={this.props.isPressed}
                 onClick={() => {
-                    if (!this.state.inGrid) {
-                        this.setState({pressed: this.props.squareKey === this.props.numberPressed});
-                    }
                     this.props.onSquareClick(this.props.squareKey);
                 }}>
                 {this.props.value}

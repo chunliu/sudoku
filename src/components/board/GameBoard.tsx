@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {Square} from "./Square";
 import {COLS, ROWS, ISudoku} from "../../core/sudokuClass";
 import {ISudokuState, GameStatus} from "../../redux/types";
-import {statusUpdate, updateNumberSelected} from "../../redux/sudokuAction";
+import {actionCreators} from "../../redux/sudokuAction";
 import "../../scss/main.scss";
 
 interface IBoardProps {
@@ -36,7 +36,7 @@ class GameBoardClass extends React.Component<IBoardProps, ISudokuState> {
     private renderSudokuGrid(sudoku: ISudoku) {
         return (
             <div>
-                <div className="status">{this.props.status.toString()}</div>
+                <div className="status">{this.props.numberSelected}</div>
                 {ROWS.map((r) => {
                     return (
                         <div key={r} className="board-row">
@@ -61,7 +61,7 @@ class GameBoardClass extends React.Component<IBoardProps, ISudokuState> {
                 {COLS.map((c) => {
                     return (
                         <Square key={c} onSquareClick={this.handleNumberClick}
-                            numberPressed={this.props.numberSelected} squareKey={c} value={c} />
+                            isPressed={this.props.numberSelected === c} squareKey={c} value={c} />
                     );
                 })}
             </div>
@@ -71,7 +71,6 @@ class GameBoardClass extends React.Component<IBoardProps, ISudokuState> {
         alert(key + " is clicked");
     }
     private handleNumberClick(key: string) {
-        console.log(this.props.status);
         this.props.actions.updateNumberSelected(key);
     }
 }
@@ -91,10 +90,7 @@ const mapStateToProps = (state: IStateFromStore) => {
 
 const mapDispatchToProps = (dispatch: Redux.Dispatch<ISudokuState>) => {
     return {
-        actions: Redux.bindActionCreators( {
-            statusUpdate,
-            updateNumberSelected,
-        }, dispatch),
+        actions: Redux.bindActionCreators(actionCreators, dispatch),
     };
 };
 
