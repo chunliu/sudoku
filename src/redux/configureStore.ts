@@ -1,10 +1,13 @@
 import {createStore, Store, applyMiddleware, Dispatch} from "redux";
 import thunk from "redux-thunk";
+import "whatwg-fetch";
+import {random} from "lodash";
 import {rootReducer} from "./sudokuReducer";
 import {devToolsEnhancer, composeWithDevTools} from "redux-devtools-extension";
 import {ISudoku, ROWS, COLS, Sudoku} from "../core/sudokuClass";
+import {sudokuGrids} from "../core/sudokuGrids";
 import {loadGridSuccess, statusUpdate,
-    updateFillingCount, loadPuzzleAction} from "./sudokuAction";
+    updateFillingCount, loadPuzzleAction, filledCellsAction} from "./sudokuAction";
 import {GameStatus, ISudokuState, ISudokuReducerState} from "./types";
 
 export const configureStore = () => {
@@ -15,13 +18,15 @@ export const configureStore = () => {
         ),
     );
 };
-export const loadPuzzle = (puzzle: string) => {
+export const loadPuzzle = () => {
     return (dispatch: Dispatch<{}>) => {
-        dispatch(loadPuzzleAction(puzzle));
+        const p = sudokuGrids[random(0, 49)];
+        return dispatch(loadPuzzleAction(p));
     };
 };
-export const loadGrid = (grid: string) => {
-    return (dispatch: Dispatch<{}>) => {
+export const loadGrid = () => {
+    return (dispatch: Dispatch<{}>, getState: () => ISudokuReducerState) => {
+        const grid = getState().loadPuzzleReducer;
         let index = 0;
         const result: ISudoku = {};
         for (const r of ROWS) {
@@ -34,25 +39,59 @@ export const loadGrid = (grid: string) => {
                 index++;
             }
         }
-        dispatch(loadGridSuccess(result));
+        return dispatch(loadGridSuccess(result));
     };
 };
-export const initializeStatue = () => {
+export const initializeStatue = (status: GameStatus) => {
     return (dispatch: Dispatch<{}>) => {
-        statusUpdate(GameStatus.Initializing);
+        return dispatch(statusUpdate(status));
     };
 };
-export const initFillingCount = (grid: string) => {
-    return (dispatch: Dispatch<{}>) => {
+export const initFillingCount = () => {
+    return (dispatch: Dispatch<{}>, getState: () => ISudokuReducerState) => {
+        const grid = getState().loadPuzzleReducer;
         let count = 0;
         for (const c of grid) {
             if (c === "0") {
                 count++;
             }
         }
-        dispatch(updateFillingCount(count));
+        return dispatch(updateFillingCount(count));
     };
 };
+export const cleanFilledCells = () => {
+    return (dispatch: Dispatch<{}>, getState: () => ISudokuReducerState) => {
+        const filledCells = {
+            fill: false,
+            filledCells: getState().filledCellsReducer,
+        };
+        return dispatch(filledCellsAction(filledCells));
+    };
+};
+
+export const initializeGame = () => {
+    return (dispatch: Dispatch<{}>) => Promise.all([
+        dispatch(initializeStatue(GameStatus.Initializing)),
+        dispatch(loadPuzzle()),
+        dispatch(loadGrid()),
+        dispatch(initFillingCount()),
+        dispatch(cleanFilledCells()),
+    ]).then(() =>
+        // Use promise here to allow the status of Square to sink.
+        dispatch(initializeStatue(GameStatus.Playing)),
+    );
+};
+export const resetGame = () => {
+    return (dispatch: Dispatch<{}>) => Promise.all([
+        dispatch(initializeStatue(GameStatus.Initializing)),
+        dispatch(loadGrid()),
+        dispatch(initFillingCount()),
+        dispatch(cleanFilledCells()),
+    ]).then(() =>
+        dispatch(initializeStatue(GameStatus.Playing)),
+    );
+};
+
 export const CheckWin = () => {
     return (dispatch: Dispatch<{}>, getState: () => ISudokuReducerState) => {
         const count = getState().fillingCountReducer;
@@ -63,7 +102,17 @@ export const CheckWin = () => {
             if (sudoku.IsSolved(getState().loadPuzzleReducer, result)) {
                 status = GameStatus.Solved;
             }
-            dispatch(statusUpdate(status));
+            return dispatch(statusUpdate(status));
         }
     };
 };
+export async function fetchSudoku() {
+    // Cannot overcome the CORS of the resource site.
+    const res = await fetch("http://norvig.com/easy50.txt", {
+        method: "GET",
+        headers: {
+            "Content-Type": "text/plain",
+        },
+    });
+    return res;
+}

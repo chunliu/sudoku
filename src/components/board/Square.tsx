@@ -26,11 +26,6 @@ class Square extends React.Component<ISquareProps, ISquareState> {
             disabled: false,
         };
     }
-    public componentWillMount() {
-        if (this.props.status === GameStatus.Initializing) {
-            this.setState({disabled: this.props.value !== ""});
-        }
-    }
     public render(): JSX.Element {
         return (
             <button className={this.props.className} key={this.props.squareKey}
@@ -42,6 +37,20 @@ class Square extends React.Component<ISquareProps, ISquareState> {
                 {this.props.value}
             </button>
         );
+    }
+    private componentWillMount() {
+        if (this.props.status === GameStatus.Initializing) {
+            this.setState({disabled: this.props.value !== ""});
+        }
+    }
+    private componentWillReceiveProps(nextProps: ISquareProps) {
+        if (nextProps.status === GameStatus.Initializing) {
+            if (nextProps.value === "") {
+                this.setState({disabled: false});
+            } else {
+                this.setState({disabled: true});
+            }
+        }
     }
 }
 export const StyledSquare = styled(Square)`

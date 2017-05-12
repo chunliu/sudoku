@@ -1,19 +1,38 @@
 import * as React from "react";
+import * as Redux from "redux";
+import {connect} from "react-redux";
 import styled from "styled-components";
+import {initializeGame, resetGame} from "../../redux/configureStore";
 
 interface ILeftSideBarProps {
     children?: React.ReactChildren;
     className?: string;
+    actions: any;
 }
 
-const LeftSideBar: React.StatelessComponent<ILeftSideBarProps> = (props) => (
-    <div className={props.className}>
-        <StyledButton>New Game</StyledButton>
-        <StyledButton>Reset</StyledButton>
-    </div>
-);
+class LeftSideBarComponent extends React.Component<ILeftSideBarProps, {}> {
+    constructor() {
+        super();
+        this.handleNewGame = this.handleNewGame.bind(this);
+        this.handleReset = this.handleReset.bind(this);
+    }
+    public render() {
+        return (
+            <div className={this.props.className}>
+                <StyledButton onClick={this.handleNewGame}>New Game</StyledButton>
+                <StyledButton onClick={this.handleReset}>Reset</StyledButton>
+            </div>
+        );
+    }
+    private handleNewGame() {
+        this.props.actions.initializeGame();
+    }
+    private handleReset() {
+        this.props.actions.resetGame();
+    }
+}
 
-export const StyledLeftSideBar = styled(LeftSideBar)`
+const StyledLeftSideBar = styled(LeftSideBarComponent)`
     width: 150px;
     height: 500px;
 	float: left;
@@ -43,3 +62,12 @@ const StyledButton = styled.button`
         text-shadow: -1px 1px #193047;
     }
 `;
+const mapDispatchToProps = (dispatch: Redux.Dispatch<{}>) => {
+    return {
+        actions: Redux.bindActionCreators({
+            initializeGame,
+            resetGame,
+        }, dispatch),
+    };
+};
+export const LeftSideBar = connect(null, mapDispatchToProps)(StyledLeftSideBar);

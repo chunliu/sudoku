@@ -28,9 +28,6 @@ class GameBoardClass extends React.Component<IBoardProps, {}> {
         this.handleGridClick = this.handleGridClick.bind(this);
         this.handleNumberClick = this.handleNumberClick.bind(this);
     }
-    public componentDidMount() {
-        this.props.actions.statusUpdate(GameStatus.Playing);
-    }
     public render() {
         const {sudoku} = this.props;
         return (

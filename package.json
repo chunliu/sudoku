@@ -35,7 +35,8 @@
     "react-router-dom": "^4.1.1",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
-    "styled-components": "^1.4.6"
+    "styled-components": "^1.4.6",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "@types/enzyme": "^2.8.0",
