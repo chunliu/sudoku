@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import styled from "styled-components";
 import {StyledSquare} from "./Square";
 import {COLS, ROWS, ISudoku} from "../../core/sudokuClass";
-import {ISudokuState, GameStatus} from "../../redux/types";
+import {ISudokuState, GameStatus, ISudokuReducerState} from "../../redux/types";
 import {actionCreators} from "../../redux/sudokuAction";
 
 interface IBoardProps {
@@ -95,13 +95,8 @@ const StyledGameBoard = styled(GameBoardClass)`
     width: 450px;
     float: left;
 `;
-interface IStateFromStore {
-    sudokuReducer: ISudoku;
-    statusReducer: GameStatus;
-    numberSelectedReducer: string;
-}
 
-const mapStateToProps = (state: IStateFromStore) => {
+const mapStateToProps = (state: ISudokuReducerState) => {
     return {
         sudoku: state.sudokuReducer,
         status: state.statusReducer,

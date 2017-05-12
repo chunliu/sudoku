@@ -2,9 +2,10 @@ import {createStore, Store, applyMiddleware, Dispatch} from "redux";
 import thunk from "redux-thunk";
 import {rootReducer} from "./sudokuReducer";
 import {devToolsEnhancer, composeWithDevTools} from "redux-devtools-extension";
-import {ISudoku, ROWS, COLS} from "../core/sudokuClass";
-import {loadGridSuccess, statusUpdate, updateFillingCount} from "./sudokuAction";
-import {GameStatus} from "./types";
+import {ISudoku, ROWS, COLS, Sudoku} from "../core/sudokuClass";
+import {loadGridSuccess, statusUpdate,
+    updateFillingCount, loadPuzzleAction} from "./sudokuAction";
+import {GameStatus, ISudokuState, ISudokuReducerState} from "./types";
 
 export const configureStore = () => {
     return createStore(
@@ -13,6 +14,11 @@ export const configureStore = () => {
             applyMiddleware(thunk),
         ),
     );
+};
+export const loadPuzzle = (puzzle: string) => {
+    return (dispatch: Dispatch<{}>) => {
+        dispatch(loadPuzzleAction(puzzle));
+    };
 };
 export const loadGrid = (grid: string) => {
     return (dispatch: Dispatch<{}>) => {
@@ -45,5 +51,19 @@ export const initFillingCount = (grid: string) => {
             }
         }
         dispatch(updateFillingCount(count));
+    };
+};
+export const CheckWin = () => {
+    return (dispatch: Dispatch<{}>, getState: () => ISudokuReducerState) => {
+        const count = getState().fillingCountReducer;
+        if (count === 0) {
+            const result = getState().sudokuReducer;
+            const sudoku = new Sudoku();
+            let status: GameStatus = GameStatus.Failed;
+            if (sudoku.IsSolved(getState().loadPuzzleReducer, result)) {
+                status = GameStatus.Solved;
+            }
+            dispatch(statusUpdate(status));
+        }
     };
 };

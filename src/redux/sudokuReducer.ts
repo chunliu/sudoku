@@ -1,6 +1,7 @@
 import {combineReducers, Reducer} from "redux";
 import {ISudokuState, ISudokuAction, ActionType, initState,
-    IStatusAction, INumberSelectedAction, IFillingCountAction} from "./types";
+    IStatusAction, INumberSelectedAction,
+    IFillingCountAction, IPuzzleAction} from "./types";
 
 const sudokuReducer = (state = initState.sudoku, action: ISudokuAction) => {
     switch (action.type) {
@@ -34,9 +35,18 @@ const fillingCountReducer = (state = initState.fillingCount, action: IFillingCou
             return state;
     }
 };
+const loadPuzzleReducer = (state = initState.puzzle, action: IPuzzleAction) => {
+    switch (action.type) {
+        case ActionType.LOAD_PUZZLE:
+            return action.puzzle;
+        default:
+            return state;
+    }
+};
 export const rootReducer = combineReducers({
     sudokuReducer,
     statusReducer,
     numberSelectedReducer,
     fillingCountReducer,
+    loadPuzzleReducer,
 });

@@ -15,6 +15,7 @@
     "url": "https://github.com/chunliu/sudoku"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.64",
     "@types/react": "^15.0.23",
     "@types/react-bootstrap": "0.0.49",
     "@types/react-dom": "^15.5.0",
@@ -24,6 +25,7 @@
     "@types/react-router-dom": "^4.0.4",
     "@types/redux": "^3.6.0",
     "@types/redux-thunk": "^2.1.0",
+    "lodash": "^4.17.4",
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.0",
     "react-dom": "^15.5.4",

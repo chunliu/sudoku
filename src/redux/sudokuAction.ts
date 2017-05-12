@@ -1,7 +1,7 @@
 import * as Redux from "redux";
 import {ActionType, ISudokuAction, GameStatus,
     IStatusAction, INumberSelectedAction,
-    IFillingCountAction} from "./types";
+    IFillingCountAction, IPuzzleAction} from "./types";
 import {ISudoku} from "../core/sudokuClass";
 
 export const loadGridSuccess = (grid: ISudoku): ISudokuAction => {
@@ -17,6 +17,9 @@ export const updateNumberSelected = (numberSelected: string): INumberSelectedAct
 };
 export const updateFillingCount = (fillingCount: number): IFillingCountAction => {
     return {type: ActionType.UPDATE_FILLING_COUNT, fillingCount};
+};
+export const loadPuzzleAction = (puzzle: string): IPuzzleAction => {
+    return {type: ActionType.LOAD_PUZZLE, puzzle};
 };
 export const actionCreators = {
     loadGridSuccess,
