@@ -8,7 +8,7 @@ import {loadGrid, initializeStatue, configureStore,
     initFillingCount, loadPuzzle} from "./redux/configureStore";
 
 const store = configureStore();
-const grid = "483921657967345821251876493548132976729564138136798245372689514814253769695417380";
+const grid = "483921657967345821251876493548132976729564138136798245372689514814253769695417080";
 store.dispatch(loadPuzzle(grid));
 store.dispatch(loadGrid(grid));
 store.dispatch(initializeStatue());

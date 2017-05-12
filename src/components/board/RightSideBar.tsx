@@ -18,8 +18,8 @@ class RightSideBarComponent extends React.Component<IRightSideBarProps, {}> {
     public render() {
         return (
             <div className={this.props.className}>
-                <h2>Count: {this.props.fillingCount}</h2>
-                <h2>Status: {this.printGameStatus(this.props.gameStatus)}</h2>
+                <StyledDiv>Blank Cells: {this.props.fillingCount}</StyledDiv>
+                <StyledDiv>Status: {this.printGameStatus(this.props.gameStatus)}</StyledDiv>
             </div>
         );
     }
@@ -44,12 +44,16 @@ class RightSideBarComponent extends React.Component<IRightSideBarProps, {}> {
     }
 }
 
-export const StyledRightSideBar = styled(RightSideBarComponent)`
+const StyledRightSideBar = styled(RightSideBarComponent)`
     width: 150px;
     height: 500px;
 	float: left;
     border-left: 1px solid #999;
     padding: 10px;
+`;
+const StyledDiv = styled.div`
+    font: bold 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    line-height: 20px;
 `;
 
 const mapStateToProps = (state: ISudokuReducerState) => {

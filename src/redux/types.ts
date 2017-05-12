@@ -7,6 +7,7 @@ export const ActionType = {
     NUMBER_SELECTED: "NUMBER_SELECTED",
     UPDATE_SUDOKU_GRID: "UPDATE_SUDOKU_GRID",
     UPDATE_FILLING_COUNT: "UPDATE_FILLING_COUNT",
+    FILLED_CELLS_UPDATE: "FILLED_CELLS_UPDATE",
 };
 export const enum GameStatus {
     Initializing = 0,
@@ -20,6 +21,7 @@ export interface ISudokuState {
     status: GameStatus;
     numberSelected: string;
     fillingCount: number;
+    filledCells: string[];
 }
 export interface ISudokuReducerState {
     loadPuzzleReducer: string;
@@ -27,6 +29,7 @@ export interface ISudokuReducerState {
     statusReducer: GameStatus;
     numberSelectedReducer: string;
     fillingCountReducer: number;
+    filledCellsReducer: string[];
 }
 export interface ISudokuAction extends Redux.Action {
     sudoku: ISudoku;
@@ -37,6 +40,7 @@ export const initState: ISudokuState = {
     status: GameStatus.Initializing,
     numberSelected: "0",
     fillingCount: 0,
+    filledCells: [],
 };
 export interface IPuzzleAction extends Redux.Action {
     puzzle: string;
@@ -49,4 +53,8 @@ export interface INumberSelectedAction extends Redux.Action {
 }
 export interface IFillingCountAction extends Redux.Action {
     fillingCount: number;
+}
+export interface IFilledCellsAction extends Redux.Action {
+    fill: boolean;
+    filledCells: string[];
 }

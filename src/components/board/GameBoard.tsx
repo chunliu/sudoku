@@ -2,6 +2,7 @@ import * as React from "react";
 import * as Redux from "redux";
 import {connect} from "react-redux";
 import styled from "styled-components";
+import {indexOf} from "lodash";
 import {StyledSquare} from "./Square";
 import {COLS, ROWS, ISudoku} from "../../core/sudokuClass";
 import {ISudokuState, GameStatus, ISudokuReducerState} from "../../redux/types";
@@ -11,6 +12,7 @@ interface IBoardProps {
     sudoku: ISudoku;
     status: GameStatus;
     numberSelected: string;
+    filledCells: string[];
     className?: string;
     actions: any;
 }
@@ -53,6 +55,7 @@ class GameBoardClass extends React.Component<IBoardProps, {}> {
                                         borderleft={"47".indexOf(c) >= 0}
                                         borderbotton={"CF".indexOf(r) >= 0}
                                         bordertop={"DG".indexOf(r) >= 0}
+                                        isFilled={indexOf(this.props.filledCells, r + c) !== -1}
                                         onSquareClick={this.handleGridClick}
                                         status={this.props.status} squareKey={r + c}
                                         value={value} />
@@ -85,6 +88,10 @@ class GameBoardClass extends React.Component<IBoardProps, {}> {
             ? this.props.numberSelected : "";
         // Update redux store.
         this.props.actions.updateFillingCount(s[key] !== "" ? -1 : 1);
+        this.props.actions.filledCellsAction({
+            fill: s[key] !== "",
+            filledCells: [key],
+        });
         this.props.actions.loadGridSuccess(s);
     }
     private handleNumberClick(key: string) {
@@ -101,6 +108,7 @@ const mapStateToProps = (state: ISudokuReducerState) => {
         sudoku: state.sudokuReducer,
         status: state.statusReducer,
         numberSelected: state.numberSelectedReducer,
+        filledCells: state.filledCellsReducer,
     };
 };
 

@@ -1,7 +1,9 @@
 import {combineReducers, Reducer} from "redux";
+import {union, difference} from "lodash";
 import {ISudokuState, ISudokuAction, ActionType, initState,
     IStatusAction, INumberSelectedAction,
-    IFillingCountAction, IPuzzleAction} from "./types";
+    IFillingCountAction, IPuzzleAction,
+    IFilledCellsAction} from "./types";
 
 const sudokuReducer = (state = initState.sudoku, action: ISudokuAction) => {
     switch (action.type) {
@@ -43,10 +45,23 @@ const loadPuzzleReducer = (state = initState.puzzle, action: IPuzzleAction) => {
             return state;
     }
 };
+const filledCellsReducer = (state = initState.filledCells, action: IFilledCellsAction) => {
+    switch (action.type) {
+        case ActionType.FILLED_CELLS_UPDATE:
+            if (action.fill) {
+                return union(state, action.filledCells);
+            } else {
+                return difference(state, action.filledCells);
+            }
+        default:
+            return state;
+    }
+};
 export const rootReducer = combineReducers({
     sudokuReducer,
     statusReducer,
     numberSelectedReducer,
     fillingCountReducer,
     loadPuzzleReducer,
+    filledCellsReducer,
 });
