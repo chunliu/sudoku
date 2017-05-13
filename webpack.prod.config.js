@@ -5,9 +5,11 @@ module.exports = {
     context: resolve(__dirname, 'src'),
     entry: "./index.tsx",
     output: {
+        filename: 'sudoku.js',
+        // the output bundle
+        path: resolve(__dirname, 'dist'), 
         libraryTarget: "umd",
         library: "Sudoku",
-        filename: resolve(__dirname, "./publish/sudoku.js"),
     },
 
     devtool: "source-map",
