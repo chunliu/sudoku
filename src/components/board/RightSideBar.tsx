@@ -20,8 +20,16 @@ class RightSideBarComponent extends React.Component<IRightSideBarProps, {}> {
         return (
             <div className={this.props.className}>
                 <StyledTimerDiv><Clock start={this.props.gameStatus === GameStatus.Playing} /></StyledTimerDiv>
-                <StyledDiv>Blank Cells: {this.props.fillingCount}</StyledDiv>
-                <StyledDiv>Status: {this.printGameStatus(this.props.gameStatus)}</StyledDiv>
+                <StyledTable>
+                    <tr>
+                        <StyledTd>Cells:</StyledTd>
+                        <td>{this.props.fillingCount}</td>
+                    </tr>
+                    <tr>
+                        <StyledTd>Status:</StyledTd>
+                        <td>{this.printGameStatus(this.props.gameStatus)}</td>
+                    </tr>
+                </StyledTable>
             </div>
         );
     }
@@ -45,7 +53,6 @@ class RightSideBarComponent extends React.Component<IRightSideBarProps, {}> {
         }
     }
 }
-
 const StyledRightSideBar = styled(RightSideBarComponent)`
     width: 150px;
     height: 500px;
@@ -53,8 +60,12 @@ const StyledRightSideBar = styled(RightSideBarComponent)`
     border-left: 1px solid #999;
     padding: 10px;
 `;
-const StyledDiv = styled.div`
-    font: bold 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+const StyledTable = styled.table`
+    font-weight: bold;
+    font-size: 14px;
+`;
+const StyledTd = styled.td`
+    text-align: right;
     line-height: 20px;
 `;
 const StyledTimerDiv = styled.div`

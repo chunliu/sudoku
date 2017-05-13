@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import "whatwg-fetch";
 import {random} from "lodash";
 import {rootReducer} from "./sudokuReducer";
-import {devToolsEnhancer, composeWithDevTools} from "redux-devtools-extension";
+import {devToolsEnhancer, composeWithDevTools} from "redux-devtools-extension/developmentOnly";
 import {ISudoku, ROWS, COLS, Sudoku} from "../core/sudokuClass";
 import {sudokuGrids} from "../core/sudokuGrids";
 import {loadGridSuccess, statusUpdate,
@@ -11,12 +11,19 @@ import {loadGridSuccess, statusUpdate,
 import {GameStatus, ISudokuState, ISudokuReducerState} from "./types";
 
 export const configureStore = () => {
-    return createStore(
-        rootReducer,
-        composeWithDevTools(
+    if (process.env.NODE_ENV === "production") {
+        return createStore(
+            rootReducer,
             applyMiddleware(thunk),
-        ),
-    );
+        );
+    } else {
+        return createStore(
+            rootReducer,
+            composeWithDevTools(
+                applyMiddleware(thunk),
+            ),
+        );
+    }
 };
 export const loadPuzzle = () => {
     return (dispatch: Dispatch<{}>) => {

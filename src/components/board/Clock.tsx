@@ -21,8 +21,10 @@ export class Clock extends React.Component<IClockProps, IClockState> {
         return <div>{this.getFormattedIntervals()}</div>;
     }
     private componentDidMount() {
-        this.setState({startTime: Date.now()});
-        this.toggleTimer(true);
+        if (this.props.start) {
+            this.setState({startTime: Date.now()});
+            this.toggleTimer(true);
+        }
     }
     private componentWillReceiveProps(nextProps: IClockProps) {
         if (this.props.start !== nextProps.start) {
@@ -35,14 +37,14 @@ export class Clock extends React.Component<IClockProps, IClockState> {
         }
     }
     private toggleTimer(start: boolean) {
-        let timerId = this.state.startTime;
         if (start) {
-            timerId = setInterval(() => {
+            const timerId = window.setInterval(() => {
                 this.tick();
             }, 1000);
             this.setState({timerId});
         } else {
-            clearInterval(timerId);
+            console.log("stop timer");
+            window.clearInterval(this.state.timerId);
         }
     }
     private tick() {

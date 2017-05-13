@@ -2,11 +2,15 @@
   "name": "sudoku",
   "version": "1.0.0",
   "description": "A Sudoku puzzle game created with React, Redux and TypeScript.",
-  "main": "index.js",
+  "main": "built/sudoku.js",
+  "types": "built/sudoku.d.ts",
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --exclude 'src/tests/*.{ts,tsx}'",
     "start": "webpack-dev-server",
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc && webpack --progress",
+    "clean": "rd /s/q built",
+    "prepublish": "tsc && webpack --progress --config webpack.prod.config.js"
   },
   "author": "Chun Liu",
   "license": "GPL",
@@ -41,6 +45,7 @@
   "devDependencies": {
     "@types/enzyme": "^2.8.0",
     "@types/jest": "^19.2.3",
+    "@types/node": "^7.0.18",
     "@types/react-hot-loader": "^3.0.1",
     "@types/redux-devtools-extension": "^2.13.0",
     "awesome-typescript-loader": "^3.1.2",
