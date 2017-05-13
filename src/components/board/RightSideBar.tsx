@@ -21,14 +21,16 @@ class RightSideBarComponent extends React.Component<IRightSideBarProps, {}> {
             <div className={this.props.className}>
                 <StyledTimerDiv><Clock start={this.props.gameStatus === GameStatus.Playing} /></StyledTimerDiv>
                 <StyledTable>
-                    <tr>
-                        <StyledTd>Cells:</StyledTd>
-                        <td>{this.props.fillingCount}</td>
-                    </tr>
-                    <tr>
-                        <StyledTd>Status:</StyledTd>
-                        <td>{this.printGameStatus(this.props.gameStatus)}</td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <StyledTd>Cells:</StyledTd>
+                            <td>{this.props.fillingCount}</td>
+                        </tr>
+                        <tr>
+                            <StyledTd>Status:</StyledTd>
+                            <td>{this.printGameStatus(this.props.gameStatus)}</td>
+                        </tr>
+                    </tbody>
                 </StyledTable>
             </div>
         );
@@ -54,11 +56,11 @@ class RightSideBarComponent extends React.Component<IRightSideBarProps, {}> {
     }
 }
 const StyledRightSideBar = styled(RightSideBarComponent)`
-    width: 150px;
+    width: 15%;
     height: 500px;
 	float: left;
     border-left: 1px solid #999;
-    padding: 10px;
+    margin-left: 10px;
 `;
 const StyledTable = styled.table`
     font-weight: bold;

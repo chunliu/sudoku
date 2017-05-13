@@ -33,7 +33,7 @@ class LeftSideBarComponent extends React.Component<ILeftSideBarProps, {}> {
 }
 
 const StyledLeftSideBar = styled(LeftSideBarComponent)`
-    width: 150px;
+    width: 15%;
     height: 500px;
 	float: left;
 	padding: 5px 15px;

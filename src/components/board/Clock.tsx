@@ -36,6 +36,9 @@ export class Clock extends React.Component<IClockProps, IClockState> {
             }
         }
     }
+    private componentWillUnmount() {
+        this.toggleTimer(false);
+    }
     private toggleTimer(start: boolean) {
         if (start) {
             const timerId = window.setInterval(() => {
@@ -43,7 +46,6 @@ export class Clock extends React.Component<IClockProps, IClockState> {
             }, 1000);
             this.setState({timerId});
         } else {
-            console.log("stop timer");
             window.clearInterval(this.state.timerId);
         }
     }

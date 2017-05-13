@@ -9,21 +9,34 @@ interface GameProps {
 }
 export class Game extends React.Component<GameProps, {}> {
     public render(): JSX.Element {
-        return (
-            <div className={this.props.className}>
-                <h1>Sukodu</h1>
-                <hr />
-                <LeftSideBar />
-                <GameBoard />
-                <RightSideBar />
-            </div>
-        );
+        if (window.matchMedia("(max-width: 768px)").matches) {
+            return (
+                <div className={this.props.className}>
+                    <h1>Sukodu</h1>
+                    <hr />
+                    <LeftSideBar />
+                    {/*<RightSideBar floatToLeft />*/}
+                    <GameBoard />
+                </div>
+            );
+        } else {
+            // console.log("not match");
+            return (
+                <div className={this.props.className}>
+                    <h1>Sukodu</h1>
+                    <hr />
+                    <LeftSideBar />
+                    <GameBoard />
+                    <RightSideBar />
+                </div>
+            );
+        }
     }
 }
 export const StyledGame = styled(Game)`
     font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: #4d4d4d;
     min-width: 550px;
-    max-width: 850px;
+    max-width: 900px;
     margin: 0 auto;
 `;
