@@ -2,9 +2,10 @@ import * as React from "react";
 import * as Redux from "redux";
 import {connect} from "react-redux";
 import styled from "styled-components";
-import {ISudokuState, GameStatus, ISudokuReducerState} from "../../redux/types";
+import {GameStatus, ISudokuReducerState} from "../../redux/types";
 import {CheckWin} from "../../redux/configureStore";
 import {statusUpdate} from "../../redux/sudokuAction";
+import {Clock} from "./Clock";
 
 interface IRightSideBarProps {
     children?: React.ReactChildren;
@@ -18,6 +19,7 @@ class RightSideBarComponent extends React.Component<IRightSideBarProps, {}> {
     public render() {
         return (
             <div className={this.props.className}>
+                <StyledTimerDiv><Clock start={this.props.gameStatus === GameStatus.Playing} /></StyledTimerDiv>
                 <StyledDiv>Blank Cells: {this.props.fillingCount}</StyledDiv>
                 <StyledDiv>Status: {this.printGameStatus(this.props.gameStatus)}</StyledDiv>
             </div>
@@ -55,7 +57,13 @@ const StyledDiv = styled.div`
     font: bold 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
     line-height: 20px;
 `;
-
+const StyledTimerDiv = styled.div`
+    font-weight: bold;
+    font-size: 36px;
+    margin: 0 auto;
+    text-align: center;
+    padding-bottom: 15px;
+`;
 const mapStateToProps = (state: ISudokuReducerState) => {
     return {
         fillingCount: state.fillingCountReducer,

@@ -20,7 +20,7 @@ class LeftSideBarComponent extends React.Component<ILeftSideBarProps, {}> {
         return (
             <div className={this.props.className}>
                 <StyledButton onClick={this.handleNewGame}>New Game</StyledButton>
-                <StyledButton onClick={this.handleReset}>Reset</StyledButton>
+                <StyledButton onClick={this.handleReset}>Restart</StyledButton>
             </div>
         );
     }
