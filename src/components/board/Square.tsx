@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import {GameStatus} from "../../redux/types";
+import {Button} from "react-bootstrap";
 interface ISquareProps {
     squareKey: string;
     value: string;

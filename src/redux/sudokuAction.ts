@@ -3,6 +3,7 @@ import {ActionType, ISudokuAction, GameStatus,
     IStatusAction, INumberSelectedAction,
     IFillingCountAction, IPuzzleAction,
     IFilledCellsAction} from "./types";
+import {CheckWin} from "./configureStore";
 import {ISudoku} from "../core/sudokuClass";
 
 export const loadGridSuccess = (grid: ISudoku): ISudokuAction => {
@@ -35,4 +36,5 @@ export const actionCreators = {
     updateNumberSelected,
     updateFillingCount,
     filledCellsAction,
+    CheckWin,
 };

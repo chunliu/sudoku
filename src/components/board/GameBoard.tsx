@@ -7,12 +7,14 @@ import {StyledSquare} from "./Square";
 import {COLS, ROWS, ISudoku} from "../../core/sudokuClass";
 import {ISudokuState, GameStatus, ISudokuReducerState} from "../../redux/types";
 import {actionCreators} from "../../redux/sudokuAction";
+import {Clock} from "./Clock";
 
 interface IBoardProps {
     sudoku: ISudoku;
     status: GameStatus;
     numberSelected: string;
     filledCells: string[];
+    fillingCount: number;
     className?: string;
     actions: any;
 }
@@ -32,6 +34,7 @@ class GameBoardClass extends React.Component<IBoardProps, {}> {
         const {sudoku} = this.props;
         return (
             <div className={this.props.className}>
+                <StyledTimerDiv><Clock start={this.props.status === GameStatus.Playing}/></StyledTimerDiv>
                 {this.renderSudokuGrid(sudoku)}
                 <br />
                 {this.renderNumberSelection()}
@@ -94,18 +97,31 @@ class GameBoardClass extends React.Component<IBoardProps, {}> {
     private handleNumberClick(key: string) {
         this.props.actions.updateNumberSelected(key);
     }
+    private componentWillReceiveProps(nextProps: IBoardProps) {
+        if (nextProps.fillingCount === 0) {
+            this.props.actions.CheckWin();
+        } else if  (this.props.fillingCount === 0 && nextProps.fillingCount > 0) {
+            this.props.actions.statusUpdate(GameStatus.Playing);
+        }
+    }
 }
 const StyledGameBoard = styled(GameBoardClass)`
-    width: 450px;
-    float: left;
+    min-width: 480px;
+    text-align: center;
 `;
-
+const StyledTimerDiv = styled.div`
+    font-weight: bold;
+    font-size: 36px;
+    text-align: center;
+    line-height: 1.3;
+`;
 const mapStateToProps = (state: ISudokuReducerState) => {
     return {
         sudoku: state.sudokuReducer,
         status: state.statusReducer,
         numberSelected: state.numberSelectedReducer,
         filledCells: state.filledCellsReducer,
+        fillingCount: state.fillingCountReducer,
     };
 };
 

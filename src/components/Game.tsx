@@ -1,44 +1,25 @@
 import * as React from "react";
 import styled from "styled-components";
 import {GameBoard} from "./board/GameBoard";
-import {LeftSideBar} from "./board/LeftSideBar";
-import {RightSideBar} from "./board/RightSideBar";
+import {HeaderNav} from "./board/HeaderNav";
+import {Grid, Row} from "react-bootstrap";
 
 interface GameProps {
     className?: string;
 }
+
 export class Game extends React.Component<GameProps, {}> {
     public render(): JSX.Element {
-        if (window.matchMedia("(max-width: 768px)").matches) {
-            return (
-                <div className={this.props.className}>
-                    <h1>Sukodu</h1>
-                    <hr />
-                    <LeftSideBar />
-                    {/*<RightSideBar floatToLeft />*/}
-                    <GameBoard />
-                </div>
-            );
-        } else {
-            // console.log("not match");
-            return (
-                <div className={this.props.className}>
-                    <h1>Sukodu</h1>
-                    <hr />
-                    <LeftSideBar />
-                    <GameBoard />
-                    <RightSideBar />
-                </div>
-            );
-        }
+        return (
+            <Grid fluid>
+                <HeaderNav />
+                <GameBoard />
+            </Grid>
+        );
     }
 }
-export const StyledGame = styled(Game)`
-    font: 14px 'Raleway', Arial, sans-serif;
-    color: #4d4d4d;
-    height: 100%;
-    box-sizing: border-box;
-    min-width: 550px;
-    max-width: 900px;
-    margin: 0 auto;
-`;
+// export const StyledGame = styled(Game)`
+//     min-width: 550px;
+//     max-width: 900px;
+//     margin: 0 auto;
+// `;
