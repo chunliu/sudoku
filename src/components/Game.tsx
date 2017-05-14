@@ -34,8 +34,10 @@ export class Game extends React.Component<GameProps, {}> {
     }
 }
 export const StyledGame = styled(Game)`
-    font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font: 14px 'Raleway', Arial, sans-serif;
     color: #4d4d4d;
+    height: 100%;
+    box-sizing: border-box;
     min-width: 550px;
     max-width: 900px;
     margin: 0 auto;
