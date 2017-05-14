@@ -25,6 +25,8 @@ module.exports = {
                 'NODE_ENV': JSON.stringify('production')
             }
         }),
+        new HtmlWebpackPlugin({template: resolve(__dirname, 'src/index.html')}),
+        // inject <script> in html file.         
         new webpack.optimize.UglifyJsPlugin({
             compressor: {
                 warnings: false
@@ -41,5 +43,8 @@ module.exports = {
             { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
         ]
     },
-
+    externals: {
+        "react": "React",
+        "react-dom": "ReactDOM"
+    },
 };

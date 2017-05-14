@@ -78,4 +78,8 @@ module.exports = {
         // inject <script> in html file. 
         new OpenBrowserPlugin({url: 'http://localhost:8080'}),      
     ],
+    externals: {
+        "react": "React",
+        "react-dom": "ReactDOM"
+    },    
 };
