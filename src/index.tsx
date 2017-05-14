@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import * as Redux from "redux";
 import {Provider} from "react-redux";
 import { AppContainer } from "react-hot-loader";
-import {Game} from "./components/Game";
+import {StyledGame} from "./components/Game";
 import {configureStore, initializeGame} from "./redux/configureStore";
 // import "../node_modules/bootstrap/dist/css/bootstrap.css";
 
@@ -12,7 +12,7 @@ store.dispatch(initializeGame());
 
 ReactDOM.render(
     <Provider store={store}>
-        <Game />
+        <StyledGame />
     </Provider>,
     document.getElementById("app"),
 );

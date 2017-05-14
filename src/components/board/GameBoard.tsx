@@ -108,6 +108,7 @@ class GameBoardClass extends React.Component<IBoardProps, {}> {
 const StyledGameBoard = styled(GameBoardClass)`
     min-width: 480px;
     text-align: center;
+    display: inline-box;
 `;
 const StyledTimerDiv = styled.div`
     font-weight: bold;
