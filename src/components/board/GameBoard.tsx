@@ -24,6 +24,7 @@ const BoardRow = styled.div`
     clear: both;
     content: "";
     display: table;
+    margin: 0 auto; // Align to center
 `;
 class GameBoardClass extends React.Component<IBoardProps, {}> {
     constructor() {
@@ -116,15 +117,21 @@ const StyledGameBoard = styled(GameBoardClass)`
     text-align: center;
     font-size: 2.2em;
     line-height: 1.3em;
-    @media (max-width: 420px) {
-        min-width: 420px;
+    @media (min-width: 375px) {
+        // iPhone 6s
+        min-width: 375px;
+        font-size: 1.7em;
+    }
+    @media (min-width: 414px) {
+        // iPhone 7+
+        min-width: 414px;
         font-size: 1.9em;
     }
 `;
 const StyledTimerDiv = styled.div`
     font-weight: bold;
     text-align: center;
-    margin-top: -0.75em;
+    margin-top: -0.5em;
 `;
 const mapStateToProps = (state: ISudokuReducerState) => {
     return {

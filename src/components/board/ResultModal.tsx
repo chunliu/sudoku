@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Modal, Button} from "react-bootstrap";
 
-interface IResultModalProps{
+interface IResultModalProps {
     showModal: boolean;
     solved: boolean;
     handleNewGame(): void;
@@ -48,10 +48,11 @@ export class ResultModal extends React.Component<IResultModalProps, IResultModal
         }
     }
     private modalTitle() {
-        if (this.props.solved)
+        if (this.props.solved) {
             return <Modal.Title><span className="text-success">Solved</span></Modal.Title>;
-        else
+        } else {
             return <Modal.Title><span className="text-danger">Failed</span></Modal.Title>;
+        }
     }
     private modalBody() {
         if (this.props.solved) {
