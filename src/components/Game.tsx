@@ -12,9 +12,13 @@ export class Game extends React.Component<GameProps, {}> {
     public render(): JSX.Element {
         return (
             <Grid fluid>
-                <HeaderNav />
                 <Row>
-                    <Col md={4} mdOffset={4}>
+                    <Col xs={12} md={12}>
+                        <HeaderNav />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12} sm={4} smOffset={4} md={4} mdOffset={4}>
                         <GameBoard />
                     </Col>
                 </Row>

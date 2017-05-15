@@ -108,13 +108,17 @@ class GameBoardClass extends React.Component<IBoardProps, {}> {
 const StyledGameBoard = styled(GameBoardClass)`
     min-width: 480px;
     text-align: center;
-    display: inline-box;
+    font-size: 2.2em;
+    line-height: 1.3em;
+    @media (max-width: 420px) {
+        min-width: 420px;
+        font-size: 1.9em;
+    }
 `;
 const StyledTimerDiv = styled.div`
     font-weight: bold;
-    font-size: 36px;
     text-align: center;
-    line-height: 1.3;
+    margin-top: -0.75em;
 `;
 const mapStateToProps = (state: ISudokuReducerState) => {
     return {
