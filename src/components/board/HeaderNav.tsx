@@ -11,14 +11,22 @@ interface INavButtonProps {
     handleReset(): void;
 }
 const NavButtons: React.StatelessComponent<INavButtonProps> = (props: INavButtonProps) => {
+    function onNavItemSelect(eventKey: any, e?: React.SyntheticEvent<{}>) {
+        switch (eventKey) {
+            case "NEW_GAME":
+                return props.handleNewGame();
+            case "RESTART":
+                return props.handleReset();
+            default:
+                return;
+        }
+    }
     if (props.navExpanded) {
         return (
-            <Nav pullRight>
-                <NavItem eventKey={1} href="#" 
-                    onClick={() => props.handleNewGame()}>New Game</NavItem>
-                <NavItem eventKey={2} href="#"
-                    onClick={() => props.handleReset()}>Restart</NavItem>
-            </Nav>       
+            <Nav pullRight onSelect={(eventKey: any, e?: React.SyntheticEvent<{}>) => onNavItemSelect(eventKey, e)}>
+                <NavItem eventKey={"NEW_GAME"} href="#">New Game</NavItem>
+                <NavItem eventKey={"RESTART"} href="#">Restart</NavItem>
+            </Nav>
         );
     } else {
         return (
@@ -46,7 +54,7 @@ export class HeaderNavComponent extends React.Component<IHeaderNavProps, IHeader
         super();
         this.state = {navExpanded: false};
         this.handleNewGame = this.handleNewGame.bind(this);
-        this.handleReset = this.handleReset.bind(this);        
+        this.handleReset = this.handleReset.bind(this);
     }
     public render() {
         return (
@@ -74,7 +82,7 @@ export class HeaderNavComponent extends React.Component<IHeaderNavProps, IHeader
     }
     private handleReset() {
         this.props.actions.resetGame();
-    }    
+    }
 }
 const mapDispatchToProps = (dispatch: Redux.Dispatch<{}>) => {
     return {

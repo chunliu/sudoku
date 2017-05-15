@@ -29,6 +29,7 @@ export class Clock extends React.Component<IClockProps, IClockState> {
     private componentWillReceiveProps(nextProps: IClockProps) {
         if (this.props.start !== nextProps.start) {
             if (nextProps.start) {
+                this.setState({intervals: 0});
                 this.setState({startTime: Date.now()});
                 this.toggleTimer(true);
             } else {

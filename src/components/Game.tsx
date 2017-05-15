@@ -11,20 +11,20 @@ interface GameProps {
 export class Game extends React.Component<GameProps, {}> {
     public render(): JSX.Element {
         return (
-            <div className={`container $(this.props.className)`}>
+            <Grid fluid>
                 <HeaderNav />
                 <Row>
                     <Col md={4} mdOffset={4}>
                         <GameBoard />
                     </Col>
                 </Row>
-            </div>
+            </Grid>
         );
     }
 }
-export const StyledGame = styled(Game)`
-    min-width: 480px;
-    max-width: 900px;
-    margin: 0 auto;
-    text-align: center;
-`;
+// export const StyledGame = styled(Game)`
+//     min-width: 480px;
+//     max-width: 900px;
+//     margin: 0 auto;
+//     text-align: center;
+// `;
