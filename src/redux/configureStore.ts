@@ -7,7 +7,8 @@ import {devToolsEnhancer, composeWithDevTools} from "redux-devtools-extension/de
 import {ISudoku, ROWS, COLS, Sudoku} from "../core/sudokuClass";
 import {sudokuGrids} from "../core/sudokuGrids";
 import {loadGridSuccess, statusUpdate,
-    updateFillingCount, loadPuzzleAction, filledCellsAction} from "./sudokuAction";
+    initFillingCountAction, loadPuzzleAction, filledCellsAction,
+    updateNumberSelected} from "./sudokuAction";
 import {GameStatus, ISudokuState, ISudokuReducerState} from "./types";
 
 export const configureStore = () => {
@@ -59,11 +60,11 @@ export const initFillingCount = () => {
         const grid = getState().loadPuzzleReducer;
         let count = 0;
         for (const c of grid) {
-            if (c === "0") {
+            if ("0.".indexOf(c) >= 0) {
                 count++;
             }
         }
-        return dispatch(updateFillingCount(count));
+        return dispatch(initFillingCountAction(count));
     };
 };
 export const cleanFilledCells = () => {
@@ -78,6 +79,7 @@ export const cleanFilledCells = () => {
 
 export const initializeGame = () => {
     return (dispatch: Dispatch<{}>) => Promise.all([
+        dispatch(updateNumberSelected("0")),
         dispatch(initializeStatue(GameStatus.Initializing)),
         dispatch(loadPuzzle()),
         dispatch(loadGrid()),
@@ -90,6 +92,7 @@ export const initializeGame = () => {
 };
 export const resetGame = () => {
     return (dispatch: Dispatch<{}>) => Promise.all([
+        dispatch(updateNumberSelected("0")),
         dispatch(initializeStatue(GameStatus.Initializing)),
         dispatch(loadGrid()),
         dispatch(initFillingCount()),

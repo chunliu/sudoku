@@ -8,6 +8,7 @@ import {COLS, ROWS, ISudoku} from "../../core/sudokuClass";
 import {ISudokuState, GameStatus, ISudokuReducerState} from "../../redux/types";
 import {actionCreators} from "../../redux/sudokuAction";
 import {Clock} from "./Clock";
+import {ResultModal} from "./ResultModal";
 
 interface IBoardProps {
     sudoku: ISudoku;
@@ -35,6 +36,11 @@ class GameBoardClass extends React.Component<IBoardProps, {}> {
         return (
             <div className={this.props.className}>
                 <StyledTimerDiv><Clock start={this.props.status === GameStatus.Playing}/></StyledTimerDiv>
+                <ResultModal showModal={this.props.status === GameStatus.Solved
+                    || this.props.status === GameStatus.Failed}
+                    solved={this.props.status === GameStatus.Solved}
+                    handleNewGame={this.props.actions.initializeGame}
+                    handleRestart={this.props.actions.resetGame} />
                 {this.renderSudokuGrid(sudoku)}
                 <br />
                 {this.renderNumberSelection()}

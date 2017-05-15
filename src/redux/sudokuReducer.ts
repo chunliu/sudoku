@@ -31,6 +31,8 @@ const numberSelectedReducer = (state = initState.numberSelected, action: INumber
 };
 const fillingCountReducer = (state = initState.fillingCount, action: IFillingCountAction) => {
     switch (action.type) {
+        case ActionType.INIT_FILLING_COUNT:
+            return action.fillingCount;
         case ActionType.UPDATE_FILLING_COUNT:
             return state + action.fillingCount;
         default:

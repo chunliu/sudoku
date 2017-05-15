@@ -67,7 +67,7 @@ export const StyledSquare = styled(Square)`
     margin-right: -1px;
     margin-top: -1px;
     padding: 0;
-    text-align: center;       
+    text-align: center;
     height: 1.75em;
     width: 1.75em;
     &:focus {

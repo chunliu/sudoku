@@ -26,9 +26,3 @@ export class Game extends React.Component<GameProps, {}> {
         );
     }
 }
-// export const StyledGame = styled(Game)`
-//     min-width: 480px;
-//     max-width: 900px;
-//     margin: 0 auto;
-//     text-align: center;
-// `;
