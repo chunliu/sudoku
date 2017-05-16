@@ -12,9 +12,11 @@ import {ResultModal} from "./ResultModal";
 
 interface IBoardProps {
     sudoku: ISudoku;
+    solvedSudoku: ISudoku;
     status: GameStatus;
     numberSelected: string;
     filledCells: string[];
+    failedCells: string[];
     fillingCount: number;
     className?: string;
     actions: any;
@@ -63,6 +65,7 @@ class GameBoardClass extends React.Component<IBoardProps, {}> {
                                         borderbotton={"CF".indexOf(r) >= 0}
                                         bordertop={"DG".indexOf(r) >= 0}
                                         isFilled={indexOf(this.props.filledCells, r + c) !== -1}
+                                        isWrong={indexOf(this.props.failedCells, r + c) !== -1}
                                         onSquareClick={this.handleGridClick}
                                         status={this.props.status} squareKey={r + c}
                                         value={value} />
@@ -99,6 +102,12 @@ class GameBoardClass extends React.Component<IBoardProps, {}> {
             fill: s[key] !== "",
             filledCells: [key],
         });
+        if (this.props.solvedSudoku[key] !== this.props.numberSelected) {
+            this.props.actions.failedCellsAction({
+                fill: s[key] !== "",
+                filledCells: [key],
+            });
+        }
         this.props.actions.loadGridSuccess(s);
     }
     private handleNumberClick(key: string) {
@@ -140,6 +149,8 @@ const mapStateToProps = (state: ISudokuReducerState) => {
         numberSelected: state.numberSelectedReducer,
         filledCells: state.filledCellsReducer,
         fillingCount: state.fillingCountReducer,
+        solvedSudoku: state.solveSudokuReducer,
+        failedCells: state.failedCellsReducer,
     };
 };
 

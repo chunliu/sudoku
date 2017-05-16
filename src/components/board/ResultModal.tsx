@@ -28,7 +28,9 @@ export class ResultModal extends React.Component<IResultModalProps, IResultModal
                     {this.modalBody()}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button bsStyle="primary" onClick={this.clickOK}>OK</Button>
+                    <Button bsStyle="primary" onClick={this.clickOK}>
+                        {this.props.solved ? "New Game" : "Restart"}
+                    </Button>
                     <Button onClick={this.close}>Cancel</Button>
                 </Modal.Footer>
             </Modal>

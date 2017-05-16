@@ -9,7 +9,9 @@ import {ISudoku} from "../core/sudokuClass";
 export const loadGridSuccess = (grid: ISudoku): ISudokuAction => {
     return {type: ActionType.LOAD_GRID_SUCCESS, sudoku: grid};
 };
-
+export const solveGridAction = (grid: ISudoku): ISudokuAction => {
+    return {type: ActionType.SOLVE_GRID, sudoku: grid};
+};
 export const statusUpdate = (status: GameStatus): IStatusAction => {
     return {type: ActionType.STATUS_UPDATE, status};
 };
@@ -33,6 +35,13 @@ export const filledCellsAction = (filledCells: { fill: boolean; filledCells: str
         fill: filledCells.fill,
     };
 };
+export const failedCellsAction = (filledCells: { fill: boolean; filledCells: string[]; }): IFilledCellsAction => {
+    return {
+        type: ActionType.FAILED_CELLS_UPDATE,
+        filledCells: filledCells.filledCells,
+        fill: filledCells.fill,
+    };
+};
 export const actionCreators = {
     loadGridSuccess,
     statusUpdate,
@@ -42,4 +51,5 @@ export const actionCreators = {
     CheckWin,
     initializeGame,
     resetGame,
+    failedCellsAction,
 };

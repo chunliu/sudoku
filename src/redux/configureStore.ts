@@ -8,7 +8,7 @@ import {ISudoku, ROWS, COLS, Sudoku} from "../core/sudokuClass";
 import {sudokuGrids} from "../core/sudokuGrids";
 import {loadGridSuccess, statusUpdate,
     initFillingCountAction, loadPuzzleAction, filledCellsAction,
-    updateNumberSelected} from "./sudokuAction";
+    updateNumberSelected, solveGridAction, failedCellsAction} from "./sudokuAction";
 import {GameStatus, ISudokuState, ISudokuReducerState} from "./types";
 
 export const configureStore = () => {
@@ -50,6 +50,13 @@ export const loadGrid = () => {
         return dispatch(loadGridSuccess(result));
     };
 };
+export const solveGrid = () => {
+    return (dispatch: Dispatch<{}>, getState: () => ISudokuReducerState) => {
+        const grid = getState().loadPuzzleReducer;
+        const sudoku = new Sudoku();
+        return dispatch(solveGridAction(sudoku.Solve(grid) as ISudoku));
+    };
+};
 export const initializeStatue = (status: GameStatus) => {
     return (dispatch: Dispatch<{}>) => {
         return dispatch(statusUpdate(status));
@@ -76,15 +83,25 @@ export const cleanFilledCells = () => {
         return dispatch(filledCellsAction(filledCells));
     };
 };
-
+export const cleanFailedCells = () => {
+    return (dispatch: Dispatch<{}>, getState: () => ISudokuReducerState) => {
+        const filledCells = {
+            fill: false,
+            filledCells: getState().failedCellsReducer,
+        };
+        return dispatch(failedCellsAction(filledCells));
+    };
+};
 export const initializeGame = () => {
     return (dispatch: Dispatch<{}>) => Promise.all([
         dispatch(updateNumberSelected("0")),
         dispatch(initializeStatue(GameStatus.Initializing)),
         dispatch(loadPuzzle()),
         dispatch(loadGrid()),
+        dispatch(solveGrid()),
         dispatch(initFillingCount()),
         dispatch(cleanFilledCells()),
+        dispatch(cleanFailedCells()),
     ]).then(() =>
         // Use promise here to allow the status of Square to sink.
         dispatch(initializeStatue(GameStatus.Playing)),
@@ -97,6 +114,7 @@ export const resetGame = () => {
         dispatch(loadGrid()),
         dispatch(initFillingCount()),
         dispatch(cleanFilledCells()),
+        dispatch(cleanFailedCells()),
     ]).then(() =>
         dispatch(initializeStatue(GameStatus.Playing)),
     );
@@ -106,10 +124,15 @@ export const CheckWin = () => {
     return (dispatch: Dispatch<{}>, getState: () => ISudokuReducerState) => {
         const count = getState().fillingCountReducer;
         if (count === 0) {
-            const result = getState().sudokuReducer;
-            const sudoku = new Sudoku();
+            // const result = getState().sudokuReducer;
+            // const sudoku = new Sudoku();
+            // let status: GameStatus = GameStatus.Failed;
+            // if (sudoku.IsSolved(getState().loadPuzzleReducer, result)) {
+            //     status = GameStatus.Solved;
+            // }
+            const result = getState().failedCellsReducer.length === 0;
             let status: GameStatus = GameStatus.Failed;
-            if (sudoku.IsSolved(getState().loadPuzzleReducer, result)) {
+            if (result) {
                 status = GameStatus.Solved;
             }
             return dispatch(statusUpdate(status));

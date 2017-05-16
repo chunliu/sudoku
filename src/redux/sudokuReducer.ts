@@ -13,6 +13,14 @@ const sudokuReducer = (state = initState.sudoku, action: ISudokuAction) => {
             return state;
     }
 };
+const solveSudokuReducer = (state = initState.solvedSudoku, action: ISudokuAction) => {
+    switch (action.type) {
+        case ActionType.SOLVE_GRID:
+            return Object.assign({}, state, action.sudoku);
+        default:
+            return state;
+    }
+};
 const statusReducer = (state = initState.status, action: IStatusAction) => {
     switch (action.type) {
         case ActionType.STATUS_UPDATE:
@@ -59,11 +67,25 @@ const filledCellsReducer = (state = initState.filledCells, action: IFilledCellsA
             return state;
     }
 };
+const failedCellsReducer = (state = initState.failedCells, action: IFilledCellsAction) => {
+    switch (action.type) {
+        case ActionType.FAILED_CELLS_UPDATE:
+            if (action.fill) {
+                return union(state, action.filledCells);
+            } else {
+                return difference(state, action.filledCells);
+            }
+        default:
+            return state;
+    }
+};
 export const rootReducer = combineReducers({
     sudokuReducer,
+    solveSudokuReducer,
     statusReducer,
     numberSelectedReducer,
     fillingCountReducer,
     loadPuzzleReducer,
     filledCellsReducer,
+    failedCellsReducer,
 });
